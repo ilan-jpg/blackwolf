@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlackWolf MMA Gym</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;scroll-behavior:smooth}
+    body{background:#000;color:#fff;overflow-x:hidden}
+
+    /* ===== HEADER ===== */
+    header{
+      background:rgba(0,0,0,0.95);
+      display:flex;justify-content:space-between;align-items:center;
+      padding:20px 80px;position:fixed;top:0;width:100%;z-index:1000;
+      border-bottom:2px solid #c9a227;
+    }
+    .logo{display:flex;align-items:center;gap:12px}
+    .logo img{height:45px;width:auto;border-radius:8px}
+    header h1{font-size:28px;color:#c9a227;letter-spacing:1px}
+    nav a{color:#fff;text-decoration:none;margin:0 15px;font-weight:500;transition:0.3s}
+    nav a:hover{color:#c9a227}
+
+    /* ===== HERO ===== */
+    .hero{
+      height:100vh;width:100vw;position:relative;overflow:hidden;
+      display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#fff;
+    }
+    .hero img{
+      position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;
+      filter:grayscale(100%);
+      animation: zoomInOut 25s ease-in-out infinite;
+      transform-origin:center;
+    }
+    @keyframes zoomInOut{
+      0%{transform:scale(1)}
+      50%{transform:scale(1.25)}
+      100%{transform:scale(1)}
+    }
+    .hero::after{
+      content:"";position:absolute;inset:0;background:rgba(0,0,0,0.6);z-index:1;
+    }
+    .hero-content{position:relative;z-index:2;max-width:700px}
+    .hero h2{font-size:60px;color:#c9a227;margin-bottom:20px}
+    .hero p{font-size:18px;color:#ddd;margin-bottom:30px}
+    .hero button{
+      background:#c9a227;border:none;padding:12px 35px;font-size:16px;color:#000;font-weight:bold;border-radius:5px;cursor:pointer;transition:0.3s;
+    }
+    .hero button:hover{background:#fff;transform:scale(1.05)}
+
+    /* ===== SECTIONS ===== */
+    section{padding:100px 80px;text-align:center}
+    section h2{font-size:40px;color:#c9a227;margin-bottom:40px}
+    .about p{max-width:850px;margin:0 auto 60px;font-size:18px;line-height:1.6;color:#ccc}
+
+    /* ===== GALLERY (fade in/out) ===== */
+    .gallery{display:flex;flex-direction:column;gap:100px;align-items:center}
+    .photo-block{
+      display:flex;align-items:center;justify-content:space-between;gap:60px;max-width:1100px;
+      opacity:0;transform:translateY(50px);transition:opacity 0.9s ease, transform 0.9s ease;
+    }
+    .photo-block.visible{opacity:1;transform:translateY(0)}
+    .photo-block img{width:45%;border-radius:10px;border:2px solid #c9a22733;object-fit:cover;height:400px}
+    .photo-block:nth-child(even){flex-direction:row-reverse}
+    .photo-text{width:50%;text-align:left;color:#ddd;font-size:17px;line-height:1.7}
+
+    /* ===== MEMBERSHIPS ===== */
+    .membership-container{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-top:50px}
+    .plan{
+      background:rgba(30,30,30,0.95);border:2px solid #c9a227;border-radius:12px;width:300px;padding:40px 25px;text-align:center;color:#fff;
+      box-shadow:0 0 20px rgba(201,162,39,0.2);transition:transform .3s ease,box-shadow .3s ease;
+    }
+    .plan:hover{transform:translateY(-10px);box-shadow:0 0 30px rgba(201,162,39,0.4)}
+    .plan h3{color:#c9a227;font-size:24px;margin-bottom:15px}
+    .plan p{color:#ddd;font-size:16px;line-height:1.5}
+
+    /* ===== FLOATING ICONS (bottom-right) ===== */
+    .floating-icons{
+      position:fixed;bottom:30px;right:30px;display:flex;flex-direction:column;gap:18px;z-index:2000;
+    }
+    .floating-icons a{
+      background:rgba(0,0,0,0.85);border:2px solid #c9a227;color:#c9a227;font-size:25px;border-radius:50%;
+      width:55px;height:55px;display:flex;align-items:center;justify-content:center;
+      box-shadow:0 0 12px rgba(201,162,39,0.4);transition:0.3s ease;text-decoration:none !important;
+    }
+    .floating-icons a:hover{background:#c9a227;color:#000;transform:scale(1.15);box-shadow:0 0 25px rgba(201,162,39,0.7)}
+    .floating-icons a:focus,.floating-icons a:active{outline:none;text-decoration:none}
+
+    /* ===== CONTACT OVERLAY / ICON FLY-IN ===== */
+    .contact-overlay{
+      position:fixed;inset:0;background:rgba(255,255,255,0.8);display:flex;justify-content:center;align-items:center;
+      z-index:5000;opacity:0;pointer-events:none;transition:opacity .4s ease;
+    }
+    .contact-overlay.active{opacity:1;pointer-events:all}
+    .contact-wrap{
+      display:flex;gap:30px;align-items:center;justify-content:center;flex-wrap:nowrap;
+      max-width:95%;
+      overflow:hidden; /* removed slider */
+      padding:20px;
+    }
+
+    .contact-wrap a{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:80px;height:80px;border-radius:50%;background:rgba(0,0,0,0.9);
+      border:2px solid #c9a227;color:#c9a227;font-size:36px;text-decoration:none !important;
+      box-shadow:0 0 25px rgba(201,162,39,0.4);flex-shrink:0;
+      transform:translateX(300px) scale(0.7);opacity:0;
+    }
+
+    @keyframes flyIn {
+      0%{transform:translateX(300px) scale(0.7);opacity:0}
+      50%{transform:translateX(120px) scale(1.25);opacity:1}
+      100%{transform:translateX(0) scale(1);opacity:1}
+    }
+
+    .contact-overlay.active .contact-wrap a:nth-child(1){animation:flyIn .8s cubic-bezier(.2,.9,.3,1) .05s forwards}
+    .contact-overlay.active .contact-wrap a:nth-child(2){animation:flyIn .9s cubic-bezier(.2,.9,.3,1) .12s forwards}
+    .contact-overlay.active .contact-wrap a:nth-child(3){animation:flyIn 1s cubic-bezier(.2,.9,.3,1) .18s forwards}
+    .contact-overlay.active .contact-wrap a:nth-child(4){animation:flyIn 1.05s cubic-bezier(.2,.9,.3,1) .24s forwards}
+
+    .contact-wrap a:hover{background:#c9a227;color:#000;transform:scale(1.15)}
+    .contact-wrap a, .contact-wrap a i {text-decoration:none !important}
+
+    footer{text-align:center;padding:50px;border-top:2px solid #c9a227;color:#aaa;font-size:15px;margin-top:100px}
+
+    @media(max-width:900px){
+      header{flex-direction:column;padding:20px}
+      section{padding:70px 25px}
+      .photo-block{flex-direction:column!important;text-align:center}
+      .photo-text,.photo-block img{width:100%}
+      .contact-wrap{gap:18px}
+      .contact-wrap a{width:70px;height:70px;font-size:30px}
+      .floating-icons{right:18px;bottom:20px}
+      .logo img{height:40px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="bgop.jpg" alt="BlackWolf Logo">
+      <h1>BlackWolf MMA Gym</h1>
+    </div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#memberships">Memberships</a>
+      <a href="#" id="contact-btn">Contact</a>
+    </nav>
+  </header>
+
+  <section id="home" class="hero">
+    <img src="gym-bg.jpg" alt="Gym background">
+    <div class="hero-content">
+      <h2>Welcome to BlackWolf MMA Gym</h2>
+      <p>Home of strength, precision and legacy. Where champions rise and limits are shattered.</p>
+      <button onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'});">Discover</button>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2>About Us</h2>
+    <div class="about">
+      <p>
+        BlackWolf MMA Gym is more than a fitness space — it is a discipline.  
+        Our journey has crossed paths with legends like Islam Makhachev and Zabit Magomedsharipov.  
+        Each fighter who trains here learns to think, move and fight with the mindset of a champion.  
+        We are not a regular gym. We are a brotherhood of focused, relentless warriors.
+      </p>
+    </div>
+
+    <div class="gallery">
+      <div class="photo-block">
+        <img src="islam.PNG" alt="Islam Makhachev Training">
+        <div class="photo-text">
+          <p>
+            Training moments with Islam Makhachev show the intensity and dedication that define our gym.  
+            Every move, every strike, every repetition carries the energy of champions.  
+            His sessions remind our athletes that perfection is built from discipline and patience.  
+            At BlackWolf, this spirit runs deep in every corner of the mat.
+          </p>
+        </div>
+      </div>
+
+      <div class="photo-block">
+        <img src="sparring.PNG" alt="Sparring Session">
+        <div class="photo-text">
+          <p>
+            Sparring is where instinct meets preparation.  
+            Fighters at BlackWolf train with controlled aggression and absolute focus.  
+            Each round builds mental strength, teaching how to stay calm under fire.  
+            It is not just about power — it is about precision, control and growth.
+          </p>
+        </div>
+      </div>
+
+      <div class="photo-block">
+        <img src="zabit.PNG" alt="Zabit Magomedsharipov">
+        <div class="photo-text">
+          <p>
+            Zabit Magomedsharipov embodies the artistry of MMA — technique that feels almost poetic.  
+            His sessions at BlackWolf reflect the excellence we aim to pass on to every athlete.  
+            The environment here is raw yet respectful, shaped by those who truly understand the grind.  
+            Every student who steps in feels that unspoken drive to evolve.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="memberships">
+    <h2>Membership Plans</h2>
+    <div class="membership-container">
+      <div class="plan">
+        <h3>Basic Fighter</h3>
+        <p>Access to gym equipment and group classes.<br>Perfect for newcomers looking to build consistency.</p>
+      </div>
+      <div class="plan">
+        <h3>Pro Combat</h3>
+        <p>Includes sparring sessions, MMA techniques, and conditioning programs.<br>For fighters chasing progress.</p>
+      </div>
+      <div class="plan">
+        <h3>Elite Wolf</h3>
+        <p>Full access + one-on-one coaching, nutrition planning, and private sessions.<br>Train like a champion.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="floating-icons">
+    <a href="https://maps.app.goo.gl/7hzcwKnS62EsJvw49" target="_blank" title="Location"><i class="fa-solid fa-location-dot"></i></a>
+    <a href="https://www.instagram.com/blackwolf__mma/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://wa.me/971565578086" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    <a href="tel:+971565578086" title="Call Us"><i class="fa-solid fa-phone"></i></a>
+  </div>
+
+  <div class="contact-overlay" id="contact-overlay" aria-hidden="true">
+    <div class="contact-wrap" role="dialog" aria-modal="true">
+      <a href="https://wa.me/971565578086" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://www.instagram.com/blackwolf__mma/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="tel:+971565578086" title="Call"><i class="fa-solid fa-phone"></i></a>
+      <a href="https://maps.app.goo.gl/7hzcwKnS62EsJvw49" target="_blank" title="Location"><i class="fa-solid fa-location-dot"></i></a>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 BlackWolf MMA Gym. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    const contactBtn = document.getElementById('contact-btn');
+    const overlay = document.getElementById('contact-overlay');
+    const wrap = overlay.querySelector('.contact-wrap');
+
+    contactBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (overlay.classList.contains('active')) {
+        overlay.classList.remove('active');
+        wrap.querySelectorAll('a').forEach(a => { a.style.animation = 'none'; });
+        void wrap.offsetWidth;
+        wrap.querySelectorAll('a').forEach(a => { a.style.animation = ''; });
+      } else {
+        overlay.classList.add('active');
+        wrap.querySelectorAll('a').forEach(a => { a.style.animation = 'none'; });
+        void wrap.offsetWidth;
+        wrap.querySelectorAll('a').forEach(a => { a.style.animation = ''; });
+      }
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) overlay.classList.remove('active');
+    });
+
+    const blocks = document.querySelectorAll('.photo-block');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+        else entry.target.classList.remove('visible');
+      });
+    }, { threshold: 0.25 });
+    blocks.forEach(b => observer.observe(b));
+  </script>
+</body>
+</html>
