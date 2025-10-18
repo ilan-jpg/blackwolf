@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>BlackWolf MMA Gym</title>
 
   <!-- Font Awesome -->
@@ -99,7 +99,7 @@
     .contact-wrap{
       display:flex;gap:30px;align-items:center;justify-content:center;flex-wrap:nowrap;
       max-width:95%;
-      overflow:hidden; /* removed slider */
+      overflow:hidden;
       padding:20px;
     }
 
@@ -127,15 +127,35 @@
 
     footer{text-align:center;padding:50px;border-top:2px solid #c9a227;color:#aaa;font-size:15px;margin-top:100px}
 
+    /* ===== RESPONSIVE ADJUSTMENTS ===== */
     @media(max-width:900px){
-      header{flex-direction:column;padding:20px}
-      section{padding:70px 25px}
-      .photo-block{flex-direction:column!important;text-align:center}
-      .photo-text,.photo-block img{width:100%}
-      .contact-wrap{gap:18px}
-      .contact-wrap a{width:70px;height:70px;font-size:30px}
-      .floating-icons{right:18px;bottom:20px}
-      .logo img{height:40px}
+      header{flex-direction:column;padding:15px 20px}
+      nav a{margin:10px 8px;font-size:15px}
+      section{padding:60px 20px}
+      .hero h2{font-size:36px}
+      .hero p{font-size:16px}
+      .hero button{padding:10px 25px;font-size:14px}
+      .photo-block{flex-direction:column!important;text-align:center;gap:30px}
+      .photo-block img,.photo-text{width:100%;height:auto}
+      .photo-text{font-size:16px;line-height:1.5}
+      .membership-container{flex-direction:column;align-items:center;gap:25px}
+      .plan{width:90%;padding:30px 20px}
+      .plan h3{font-size:20px}
+      .plan p{font-size:15px;line-height:1.5}
+      .floating-icons{right:15px;bottom:15px}
+      .floating-icons a{width:45px;height:45px;font-size:22px}
+      .contact-wrap a{width:60px;height:60px;font-size:28px}
+      .logo img{height:35px}
+      header h1{font-size:22px}
+    }
+
+    @media(max-width:400px){
+      .hero h2{font-size:28px}
+      .hero p{font-size:14px}
+      .hero button{padding:8px 20px;font-size:13px}
+      .photo-text{font-size:14px}
+      .plan h3{font-size:18px}
+      .plan p{font-size:14px}
     }
   </style>
 </head>
